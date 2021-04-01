@@ -6,7 +6,7 @@ if (isset($_POST["register"]) ) {
 
     if (registrasi($_POST) > 0 ){
         echo "<script>
-        alert('user baru telah  berhasil di tambahkan');
+        alert('User baru berhasil di tambahkan');
         </script>";
     } else{
         echo mysqli_error($conn);
@@ -35,7 +35,7 @@ if (isset($_POST["register"]) ) {
           <input type="password" name="password" id="password" placeholder="Password" required/>
           <input type="password" name="password2" id="password2" placeholder="Konfirmasi Password" required/>
           <a href="login.php"><button type="submit" name="register">registrasi</button></a>
-          <!-- <button type="submit" name="register"><a href="login.php" style="color:#fff;">halaman login</a></button> -->
+          
         </form>
       </div>
       <div class="overlay-container">
