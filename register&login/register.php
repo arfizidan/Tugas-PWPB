@@ -1,52 +1,54 @@
-<?php 
-include_once('db_controler.php');
-$database = new database();
-if(isset($_POST['register']))
-{
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
-    $nama = $_POST['nama'];
-    if($database->register($username,$password,$nama))
-    {
-      header('location:login.php');
+<?php
+require 'config.php';
+
+
+if (isset($_POST["register"]) ) {
+
+    if (registrasi($_POST) > 0 ){
+        echo "<script>
+        alert('user baru telah  berhasil di tambahkan');
+        </script>";
+    } else{
+        echo mysqli_error($conn);
     }
+
 }
-
 ?>
-<!doctype html>
-<html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.5">
-    <title>Register Form</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sticky-footer/">
-
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
-  </head>
-  <body class="d-flex flex-column h-100">
-    <!-- Begin page content -->
-<main role="main" class="flex-shrink-0">
-  <div class="container">
-    <h1 style="margin-left: 32%; margin-top: 20px">Form Registrasi</h1>
-    <p style="margin-left: 32%; margin-top: 30px">Silahkan Daftarkan Identitas Anda</p>
-    <form method="post" action="">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+    label{
+        display:block;
+    }
+    </style>
+</head>
+<body>
+    <h1 style="margin-left:30px;">REGISTER</h1>
     <form action="" method="post">
-			<input type="text" id="nama" name="nama" placeholder="Nama" />
-			<input type="text" id="username" name="username" placeholder="Username" />
-			<input type="password" id="password" name="password" placeholder="Password" />		
-      <button><a href="login.php" class="btn btn-success">Sign in</a></button>
-		</form>
-</form>
-  </div>
-</main>
-
+    <ul>
+        <li>
+            <label for="username">username :</label>
+            <input type="text" name="username" id="username">
+        </li>   
+        <li>
+            <label for="password">password :</label>
+            <input type="password" name="password" id="password">
+        </li>   
+        <li>
+            <label for="password2">konfirmasi password :</label>
+            <input type="password" name="password2" id="password2">
+        </li>   
+        <li><br>
+            <button type="submit" name="register" style="color:#00BD1F">registrasi</button>
+           <button type="submit" name="register"><a href="login.php" style="text-decoration:none;color:blue;">halaman login</a></button>
+        </li>
+    </ul>
+    
+    </form>
 </body>
 </html>

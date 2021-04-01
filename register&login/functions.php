@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "register");
+$conn = mysqli_connect("localhost", "root", "", "portopolio");
 
 	
 function query($sql) {

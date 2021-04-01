@@ -1,88 +1,64 @@
-<?php 
+<?php
 session_start();
-include_once('db_controler.php');
-$database = new database();
 
-if(isset($_SESSION['is_login']))
-{
-    header('location:index.php');
+if(isset($_SESSION["login"])){
+    header("Location: admin.php");
+    exit;
 }
 
-if(isset($_COOKIE['username']))
-{
-  $database->relogin($_COOKIE['username']);
-  header('location:index.php');
-}
+require 'config.php';
 
-if(isset($_POST['login']))
-{
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    if(isset($_POST['remember']))
-    {
-      $remember = TRUE;
-    }
-    else
-    {
-      $remember = FALSE;
-    }
+if(isset($_POST["login"])){
 
-    if($database->login($username,$password,$remember))
-    {
-      header('location:index.php');
+    $username= $_POST["username"];
+    $password= $_POST["password"];
+
+    $result = mysqli_query($conn, "SELECT * FROM pengguna WHERE username = '$username'");
+
+    // cek username
+    if(mysqli_num_rows($result) === 1 ) {
+
+        // cek password
+        $row = mysqli_fetch_assoc($result);
+        if(password_verify($password,$row["password"])){
+            // cek session
+            $_SESSION["login"] = true;
+
+            header("Location: admin.php");
+            exit;
+        }
     }
+    $error = true;
 }
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.5">
-    <title>Login Form</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
-
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-  </head>
-  
-  <body class="text-center">
-    
-  <div class="container" id="container">
-	<div class="form-container sign-up-container">
-		<form action="#" method="post">
-			<input type="text" placeholder="Name" />
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
-		</form>
-	</div>
-	<div class="form-container sign-in-container">
-		<form action="" method="post">
-			<h1>Sign in</h1>
-			<input type="text" id="username" name="username" placeholder="Username" />
-			<input type="password" id="password" name="password" placeholder="Password" />
-
-			<button type="submit" name="login">Sign In</button>
-      <p>Belum memiliki akun? <a href="register.php"> Daftar disini</a></p>
-		</form>
-	</div>
-	<div class="overlay-container">
-		<div class="overlay">
-			
-			<div class="overlay-panel overlay-right">
-                
-        <img src="img/starbhak.png" width="90%" style="margin-left: 20%;">
-				
-			</div>
-		</div>
-	</div>
-</div>
-</form>
-<script src="js/main.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1 style="margin-left:40px;">LOGIN</h1>
+    <?php if(isset($error)): ?>
+    <p style="color:red;">username atau password salah</p>
+    <?php endif; ?>
+    <form action="" method="post">
+        <ul>
+            <li>
+                <label for="username">username :</label>
+                <input type="text" name="username" id="username">
+            </li>
+            <li>
+                <label for="password">password :</label>
+                <input type="password" name="password" id="password">
+            </li>
+            <li><br>
+                <button type="submit" name="login">Login</button>
+                <button type="submit" name="register"><a href="register.php" style="text-decoration:none;color:blue;">register</a></button>
+            </li>
+        </ul>
+    </form>
 </body>
 </html>
